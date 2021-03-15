@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://122.51.98.193:3306/xiaobai?serverTimezone=UTC
+    username: root
+    password: 888666
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+logging:
+  level:
+    root: warn
+    com.xiaobairuler: info
+  file:
+    path: log/blog-pro.log
+server:
+  port: 443
+  ssl:
+    key-store: classpath:www.xiaobais.net.jks
+    key-store-password: huang888666
+    key-store-type: JKS

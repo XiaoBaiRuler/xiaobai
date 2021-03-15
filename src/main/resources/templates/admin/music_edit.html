@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>博客管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="/static/css/my.css" th:href="@{/css/my.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="bookmark" th:href="@{/images/favicon.ico}" type="image/x-icon">
+</head>
+<body>
+
+<!--引入顶部导航栏	-->
+<div th:replace="~{component/bar::admin_topbar(3)}"></div>
+<!--中间内容-->
+<div class="ui inverted attached segment">
+    <br><br>
+    <form action="#" method="post" th:object="${music}" th:action="@{/admin/musics/{id}(id=*{id})}"
+          class="ui inverted segment form">
+        <input type="hidden" name="id" th:value="*{id}">
+        <div class="required field">
+            <div class="ui left labeled input">
+                <div class="ui teal basic label">名称</div>
+                <input type="text" name="name" placeholder="标签名称" th:value="*{name}">
+            </div>
+        </div>
+        <div class="required field">
+            <div class="ui left labeled input">
+                <div class="ui teal basic label">作者</div>
+                <input type="text" name="artist" placeholder="标签名称" th:value="*{artist}">
+            </div>
+        </div>
+        <div class="required field">
+            <div class="ui left labeled input">
+                <div class="ui teal basic label">链接</div>
+                <input type="text" name="url" placeholder="标签名称" th:value="*{url}">
+            </div>
+        </div>
+        <div class="required field">
+            <div class="ui left labeled input">
+                <div class="ui teal basic label">封面</div>
+                <input type="text" name="cover" placeholder="标签名称" th:value="*{cover}">
+            </div>
+        </div>
+        <div class="ui error message"></div>
+        <!--/*/
+        <div class="ui negative message" th:if="${#fields.hasErrors('url')}">
+            <i class="close icon"></i>
+            <div class="header">验证失败</div>
+            <p th:errors="*{url}">提交信息不符合规则</p>
+        </div>
+        /*/-->
+        <div class="ui right aligned container">
+            <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
+            <button class="ui teal submit button">确认</button>
+        </div>
+    </form>
+    <br><br><br><br><br><br>
+</div>
+
+<!--引入footer-->
+<div th:replace="~{component/bar::footer}"></div>
+
+<!--  导入的js  -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--  自定义js  -->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('my-mobile-hide');
+    });
+    $('.ui.dropdown').dropdown();
+
+    $('.ui.form').form({
+        fields: {
+            name: {
+                identifier: 'name',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入歌名'
+                }]
+            },
+            artist: {
+                identifier: 'artist',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入艺术家'
+                }]
+            },
+            url: {
+                identifier: 'url',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入链接:/music/name.mp3'
+                }]
+            },
+            cover: {
+                identifier: 'cover',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入封面:/images/xxx.png'
+                }]
+            }
+        }
+    });
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+</script>
+</body>
+</html>

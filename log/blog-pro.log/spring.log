@@ -1,0 +1,4 @@
+2020-05-30 23:31:15.296  INFO 9580 --- [restartedMain] c.x.xiaobai.XiaobaiApplication           : Starting XiaobaiApplication on DESKTOP-9HM6KS2 with PID 9580 (E:\Resources\IDEA_Resource\xiaobai\target\classes started by dell in E:\Resources\IDEA_Resource\xiaobai)
+2020-05-30 23:31:15.304  INFO 9580 --- [restartedMain] c.x.xiaobai.XiaobaiApplication           : The following profiles are active: pro
+2020-05-30 23:31:37.708  WARN 9580 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-30 23:31:39.616  INFO 9580 --- [restartedMain] c.x.xiaobai.XiaobaiApplication           : Started XiaobaiApplication in 27.049 seconds (JVM running for 32.509)

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>博客管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="/static/css/my.css" th:href="@{/css/my.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="bookmark" th:href="@{/images/favicon.ico}" type="image/x-icon">
+</head>
+<body>
+
+<!--引入顶部导航栏	-->
+<div th:replace="~{component/bar::admin_topbar(3)}"></div>
+<div class="ui inverted attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="#" th:href="@{/admin/blogs/input}" class="item">发布</a>
+            <a href="#" th:href="@{/admin/blogs}" class="active teal item">列表</a>
+        </div>
+    </div>
+</div>
+
+<!--中间内容-->
+<div class="ui inverted attached segment">
+    <!--  内容   -->
+    <div class="ui inverted container">
+        <div class="ui secondary segment form">
+            <input type="hidden" th:name="page">
+            <div class="inline fields">
+                <div class="field">
+                    <input type="text" name="title" placeholder="标题">
+                </div>
+                <div class="field">
+                    <div class="ui type selection dropdown">
+                        <input type="hidden" name="typeId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">分类</div>
+                        <div class="menu">
+                            <div th:each="type: ${types}" class="item" th:data-value="${type.id}"
+                                 th:text="${type.name}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui tag selection dropdown">
+                        <input type="hidden" name="tagId">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">标签</div>
+                        <div class="menu">
+                            <div th:each="tag: ${tags}" class="item" th:data-value="${tag.id}"
+                                 th:text="${tag.name}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="recommend" name="recommend">
+                        <label for="recommend">推荐</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <button th:type="button" id="search-btn" class="ui teal basic button">
+                        <i class="search icon"></i>搜索
+                    </button>
+                    <button id="clear-btn" class="ui teal basic button">Clear</button>
+                </div>
+            </div>
+        </div>
+        <div id="table-container">
+            <table th:fragment="blogList" class="ui celled table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>标题</th>
+                    <th>类型</th>
+                    <th>标签</th>
+                    <th>推荐</th>
+                    <th>发布</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="blog,iterStat : ${page.content}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${blog.title}"></td>
+                    <td th:text="${blog.type.name}"></td>
+                    <td th:text="${blog.tag.name}"></td>
+                    <td th:text="${blog.recommend} ? '是':'否'"></td>
+                    <td th:text="${blog.published} ? '是':'否'"></td>
+                    <td th:text="${blog.updateTime}"></td>
+                    <td>
+                        <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}"
+                           class="ui mini teal basic button">编辑</a>
+                        <a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}"
+                           class="ui mini red basic button">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="8">
+                        <div class="ui right floated pagination menu" th:if="${page.totalPages}>1">
+                            <a onclick="page(this)" th:attr="data-page=${page.number}-1" th:unless="${page.first}"
+                               class="icon item">
+                                <i class="left chevron icon"></i>
+                            </a>
+                            <a onclick="page(this)" th:attr="data-page=${page.number}+1" th:unless="${page.last}"
+                               class="icon item">
+                                <i class="right chevron icon"></i>
+                            </a>
+                        </div>
+                        <a href="#" th:href="@{/admin/blogs/input}" class="ui left floated green button">上传</a>
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                <i class="close icon"></i>
+                <div class="header">提示</div>
+                <p th:text="${message}">操作成功</p>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br><br><br>
+</div>
+
+<!--引入footer-->
+<div th:replace="~{component/bar::footer}"></div>
+
+<!--  导入的js  -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--  自定义js  -->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('my-mobile-hide');
+    });
+    $('.ui.dropdown').dropdown();
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+
+    }
+
+    $("#search-btn").click(function () {
+        $("[name='page']").val(0);
+        loaddata();
+    });
+
+    function loaddata() {
+        $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search", {
+            title: $("[name='title']").val(),
+            typeId: $("[name='typeId']").val(),
+            tagId: $("[name='tagId']").val(),
+            recommend: $("[name='recommend']").prop('checked'),
+            page: $("[name='page']").val()
+        });
+    }
+
+    $('#clear-btn')
+        .on('click', function () {
+            $('.ui.type.dropdown')
+                .dropdown('clear')
+            ;
+            $('.ui.tag.dropdown')
+                .dropdown('clear')
+            ;
+        })
+    ;
+
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+</script>
+</body>
+</html>

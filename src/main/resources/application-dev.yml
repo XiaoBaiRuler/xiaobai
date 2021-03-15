@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://106.52.223.207:3306/xiaobai?serverTimezone=UTC
+    username: root
+    password: '#Huang888666'
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    root: info
+    com.xiaobairuler: debug
+  file:
+    path: log/blog-dev.log
+server:
+  port: 8088

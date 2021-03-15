@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>404</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="/static/css/my.css" th:href="@{/css/my.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="bookmark" th:href="@{/images/favicon.ico}" type="image/x-icon">
+</head>
+<body>
+<!--引入顶部导航栏	-->
+<div th:replace="~{component/bar::topbar(0)}"></div>
+<div class="ui inverted attached segment">
+    <div class="ui container">
+        <div class="ui error message">
+            <div class="ui center aligned container">
+                <br><br>
+                <h2>500</h2>
+                <p>对不起，服务异常，请联系管理员</p>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <br><br><br><br><br><br>
+            </div>
+        </div>
+    </div>
+</div>
+<!--引入footer-->
+<div th:replace="~{component/bar::footer}"></div>
+<!--导入的js-->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<!--  自定义js  -->
+<script>
+    // language=JQuery-CSS
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('my-mobile-hide');
+    });
+</script>
+
+</body>
+</html>
