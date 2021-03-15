@@ -17,7 +17,7 @@ logging:
     path: log/blog-pro.log
 server:
   port: 443
-  ssl:
-    key-store: classpath:www.xiaobais.net.jks
-    key-store-password: huang888666
-    key-store-type: JKS
+#   ssl:
+#     key-store: classpath:www.xiaobais.net.jks
+#     key-store-password: huang888666
+#     key-store-type: JKS
